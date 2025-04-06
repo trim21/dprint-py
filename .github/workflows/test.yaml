@@ -39,5 +39,5 @@ jobs:
         with:
           python-version: "3.x"
 
-      - run: pip install dprint --no-index --find-links=./dist/
+      - run: pip install dprint-py --no-index --find-links=./dist/
       - run: dprint --help
