@@ -49,6 +49,8 @@ jobs:
           working-directory: "dprint"
 
       - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          cache-key: "${{ matrix.platform.manylinux }}"
 
       - name: Build wheels
         uses: PyO3/maturin-action@v1
