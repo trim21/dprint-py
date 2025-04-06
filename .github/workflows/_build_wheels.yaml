@@ -62,8 +62,13 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Cache Primes
-        id: cache-primes
+      - name: cache crates
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/registry/
+          key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
+
+      - name: cache target
         uses: actions/cache@v4
         with:
           path: ./target/
@@ -78,7 +83,7 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
-          args: --release --out dist
+          args: --release --out dist --target-dir=./target/
           sccache: "true"
       - name: Upload wheels
         uses: actions/upload-artifact@v4
