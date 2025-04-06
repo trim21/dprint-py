@@ -21,18 +21,18 @@ jobs:
       contents: write
       attestations: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4
         with:
           pattern: wheels-*
           path: dist
           merge-multiple: true
 
       - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@c074443f1aee8d4aeeae555aebba3282517141b2 # v2
         with:
           subject-path: "dist/*"
       - name: Publish to PyPI
-        uses: PyO3/maturin-action@v1
+        uses: PyO3/maturin-action@44479ae1b6b1a57f561e03add8832e62c185eb17 # v1
         with:
           command: upload
           args: --non-interactive --skip-existing dist/*
