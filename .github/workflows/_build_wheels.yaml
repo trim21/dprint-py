@@ -4,65 +4,37 @@ on:
   workflow_call:
 
 jobs:
-  linux:
-    runs-on: ${{ matrix.platform.runner }}
-    name: linux ${{ matrix.platform.target }} ${{ matrix.platform.manylinux }}
-    strategy:
-      matrix:
-        platform:
-          - runner: ubuntu-24.04
-            target: x64
-            manylinux: auto
-
-          - runner: ubuntu-24.04-arm
-            target: aarch64
-            manylinux: auto
-
-          - runner: ubuntu-24.04
-            target: x64
-            manylinux: musllinux_1_2
-
-          - runner: ubuntu-24.04-arm
-            target: aarch64
-            manylinux: musllinux_1_2
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: cache crates
-        uses: actions/cache@v4
-        with:
-          path: ~/.cargo/registry/
-          key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
-
-      - name: Build wheels
-        uses: PyO3/maturin-action@v1
-        with:
-          target: ${{ matrix.platform.target }}
-          args: --release --out dist
-          sccache: "true"
-          manylinux: ${{ matrix.platform.manylinux }}
-
-      - name: Upload wheels
-        uses: actions/upload-artifact@v4
-        with:
-          name: wheels-linux-${{ matrix.platform.target }}-${{ matrix.platform.manylinux }}
-          path: dist
-
-  windows-macos:
-    name: ${{ matrix.platform.runner }} ${{ matrix.platform.target }}
+  wheel:
+    name: ${{ matrix.platform.runner }} ${{ matrix.platform.target }} ${{ matrix.platform.manylinux }}
     runs-on: ${{ matrix.platform.runner }}
     strategy:
       matrix:
         platform:
           - runner: windows-latest
             target: x64
+
           - runner: macos-13
             target: x86_64
+
           - runner: macos-14
             target: aarch64
+
+          - runner: ubuntu-24.04
+            target: x64
+            manylinux: auto
+
+          - runner: ubuntu-24.04-arm
+            target: aarch64
+            manylinux: auto
+
+          - runner: ubuntu-24.04
+            target: x64
+            manylinux: musllinux_1_2
+
+          - runner: ubuntu-24.04-arm
+            target: aarch64
+            manylinux: musllinux_1_2
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -76,25 +48,17 @@ jobs:
         with:
           working-directory: "dprint"
 
-      - name: cache crates
-        uses: actions/cache@v4
-        with:
-          path: ~/.cargo/registry/
-          key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
-
-      - name: cache target
-        uses: actions/cache@v4
-        with:
-          path: ./target/
-          key: target-${{ matrix.platform.runner }}-${{ matrix.platform.target }}-${{ hashFiles('Cargo.lock') }}
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
 
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --target-dir=./target/
+          manylinux: ${{ matrix.platform.manylinux }}
+
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ runner.os }}-${{ matrix.platform.target }}
+          name: wheels-${{ runner.os }}-${{ matrix.platform.target }}-${{ matrix.platform.manylinux }}
           path: dist
