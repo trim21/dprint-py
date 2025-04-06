@@ -25,23 +25,37 @@ jobs:
           - runner: ubuntu-24.04
             target: x64
             manylinux: musllinux_1_2
-            name: "linux x64 glibc"
+            name: "linux x64 musl"
 
           - runner: ubuntu-24.04-arm
             target: aarch64
             manylinux: musllinux_1_2
-            name: "linux arm glibc"
+            name: "linux arm musl"
 
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
 
+      - name: restore timestamps
+        uses: chetan/git-restore-mtime-action@v2
+
+      - name: restore timestamps
+        uses: chetan/git-restore-mtime-action@v2
+        with:
+          working-directory: "dprint"
+
+      - name: cache target
+        uses: actions/cache@v4
+        with:
+          path: ./target/
+          key: target-${{ matrix.platform.name }}-${{ hashFiles('Cargo.lock') }}
+
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
-          args: --release --out dist
+          args: --release --out dist --target-dir=./target/
           sccache: "true"
           manylinux: ${{ matrix.platform.manylinux }}
 
