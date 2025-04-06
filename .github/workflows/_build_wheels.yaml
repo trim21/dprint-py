@@ -50,17 +50,20 @@ jobs:
           path: dist
 
   windows-macos:
-    name: ${{ matrix.platform.runner }} ${{ matrix.platform.target }}
+    name: ${{ matrix.platform.name }}
     runs-on: ${{ matrix.platform.runner }}
     strategy:
       matrix:
         platform:
           - runner: windows-latest
             target: x64
+            name: "win32 x64"
           - runner: macos-13
             target: x86_64
+            name: "macOS x64"
           - runner: macos-14
             target: aarch64
+            name: "macOS arm"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -84,7 +87,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ./target/
-          key: target-${{ matrix.platform.runner }}-${{ matrix.platform.target }}-${{ hashFiles('Cargo.lock') }}
+          key: target-${{ matrix.platform.name }}-${{ hashFiles('Cargo.lock') }}
 
       - name: Build wheels
         uses: PyO3/maturin-action@v1
@@ -95,5 +98,5 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ runner.os }}-${{ matrix.platform.target }}
+          name: wheels-${{ matrix.platform.name }}
           path: dist
