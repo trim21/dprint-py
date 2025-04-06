@@ -74,17 +74,11 @@ jobs:
           path: ./target/
           key: target-${{ matrix.platform.runner }}-${{ matrix.platform.target }}-${{ hashFiles('Cargo.lock') }}
 
-      - name: Set up sccache
-        uses: mozilla-actions/sccache-action@v0.0.9
-        with:
-          disable_annotations: true
-          token: ${{ github.token }}
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --target-dir=./target/
-          sccache: "true"
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
