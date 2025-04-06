@@ -31,6 +31,12 @@ jobs:
         with:
           submodules: recursive
 
+      - name: cache crates
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/registry/
+          key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
+
       - name: Build wheels
         uses: PyO3/maturin-action@v1
         with:
