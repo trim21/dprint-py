@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/trim21/dprint-pre-commit
-    rev: dcc1838
+    rev: v0.49.1
     hooks:
       - id: dprint
         types_or:
