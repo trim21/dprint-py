@@ -33,26 +33,26 @@ jobs:
             name: "linux arm musl"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           submodules: recursive
 
       - name: restore timestamps
-        uses: chetan/git-restore-mtime-action@v2
+        uses: chetan/git-restore-mtime-action@26fb42a93ac0f66e9c0c5ad3bd03079cb9ee5300 # v2
 
       - name: restore timestamps
-        uses: chetan/git-restore-mtime-action@v2
+        uses: chetan/git-restore-mtime-action@26fb42a93ac0f66e9c0c5ad3bd03079cb9ee5300 # v2
         with:
           working-directory: "dprint"
 
       - name: cache target
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
         with:
           path: ./target/
           key: target-${{ matrix.platform.name }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
 
       - name: Build wheels
-        uses: PyO3/maturin-action@v1
+        uses: PyO3/maturin-action@44479ae1b6b1a57f561e03add8832e62c185eb17 # v1
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --target-dir=./target/
@@ -60,7 +60,7 @@ jobs:
           manylinux: ${{ matrix.platform.manylinux }}
 
       - name: Upload wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: wheels-${{ matrix.platform.name }}
           path: dist
@@ -81,38 +81,38 @@ jobs:
             target: aarch64
             name: "macOS arm"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           submodules: recursive
 
       - name: restore timestamps
-        uses: chetan/git-restore-mtime-action@v2
+        uses: chetan/git-restore-mtime-action@26fb42a93ac0f66e9c0c5ad3bd03079cb9ee5300 # v2
 
       - name: restore timestamps
-        uses: chetan/git-restore-mtime-action@v2
+        uses: chetan/git-restore-mtime-action@26fb42a93ac0f66e9c0c5ad3bd03079cb9ee5300 # v2
         with:
           working-directory: "dprint"
 
       - name: cache crates
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
         with:
           path: ~/.cargo/registry/
           key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
 
       - name: cache target
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
         with:
           path: ./target/
           key: target-${{ matrix.platform.name }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
 
       - name: Build wheels
-        uses: PyO3/maturin-action@v1
+        uses: PyO3/maturin-action@44479ae1b6b1a57f561e03add8832e62c185eb17 # v1
         with:
           target: ${{ matrix.platform.target }}
           args: --release --out dist --target-dir=./target/
 
       - name: Upload wheels
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: wheels-${{ matrix.platform.name }}
           path: dist
