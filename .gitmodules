@@ -1,0 +1,4 @@
+[submodule "vendor/dprint"]
+	path = vendor/dprint
+	url = https://github.com/dprint/dprint
+  branch = 0.49.1
