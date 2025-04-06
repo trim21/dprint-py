@@ -1,0 +1,79 @@
+name: build wheels
+
+on:
+  workflow_call:
+
+jobs:
+  linux:
+    runs-on: ${{ matrix.platform.runner }}
+    name: linux ${{ matrix.platform.target }} ${{ matrix.platform.manylinux }}
+    strategy:
+      matrix:
+        platform:
+          - runner: ubuntu-24.04
+            target: x64
+            manylinux: auto
+
+          - runner: ubuntu-24.04-arm
+            target: aarch64
+            manylinux: auto
+
+          - runner: ubuntu-24.04
+            target: x64
+            manylinux: musllinux_1_2
+
+          - runner: ubuntu-24.04-arm
+            target: aarch64
+            manylinux: musllinux_1_2
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.platform.target }}
+          args: --release --out dist
+          sccache: "true"
+          manylinux: ${{ matrix.platform.manylinux }}
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-linux-${{ matrix.platform.target }}-${{ matrix.platform.manylinux }}
+          path: dist
+
+  windows-macos:
+    name: ${{ matrix.platform.runner }} ${{ matrix.platform.target }}
+    runs-on: ${{ matrix.platform.runner }}
+    strategy:
+      matrix:
+        platform:
+          - runner: windows-latest
+            target: x64
+          - runner: macos-13
+            target: x86_64
+          - runner: macos-14
+            target: aarch64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Set up sccache
+        uses: mozilla-actions/sccache-action@v0.0.9
+        with:
+          disable_annotations: true
+          token: ${{ github.token }}
+      - name: Build wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          target: ${{ matrix.platform.target }}
+          args: --release --out dist
+          sccache: "true"
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ runner.os }}-${{ matrix.platform.target }}
+          path: dist
