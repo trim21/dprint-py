@@ -12,3 +12,13 @@ tasks:
       - cmd: 'git commit -m "release: v{{ .VERSION }}"'
       - cmd: git tag "v{{ .VERSION }}" -m "v{{ .VERSION }}"
       - cmd: git push
+
+  package-bump:
+    vars:
+      VERSION:
+        sh: yq '.project.version' pyproject.toml
+    cmds:
+      - cmd: git add pyproject.toml
+      - cmd: 'git commit -m "release: v{{ .VERSION }}"'
+      - cmd: git tag "v{{ .VERSION }}" -m "v{{ .VERSION }}"
+      - cmd: git push

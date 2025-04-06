@@ -5,7 +5,7 @@ build-backend = "maturin"
 [project]
 name = "dprint-py"
 requires-python = ">=3.8"
-version = '0.49.1'
+version = '0.49.1.1'
 readme = "readme.md"
 license = "MIT"
 classifiers = [
