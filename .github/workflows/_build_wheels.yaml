@@ -4,6 +4,8 @@ on:
   workflow_call:
 
 jobs:
+  # we build linux wheel in docker,
+  # so host cache doesn't work
   linux:
     runs-on: ${{ matrix.platform.runner }}
     name: ${{ matrix.platform.name }}
