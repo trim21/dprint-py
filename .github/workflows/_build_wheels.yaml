@@ -59,7 +59,7 @@ jobs:
         platform:
           - runner: windows-latest
             target: x64
-            name: "win32 x64"
+            name: "windows x64"
           - runner: macos-13
             target: x86_64
             name: "macOS x64"
