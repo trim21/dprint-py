@@ -61,6 +61,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      - name: Cache Primes
+        id: cache-primes
+        uses: actions/cache@v4
+        with:
+          path: ./target/
+          key: ${{ matrix.platform.runner }}-${{ matrix.platform.target }}
+
       - name: Set up sccache
         uses: mozilla-actions/sccache-action@v0.0.9
         with:
