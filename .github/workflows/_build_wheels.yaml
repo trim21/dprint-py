@@ -64,6 +64,9 @@ jobs:
 
       - name: restore timestamps
         uses: chetan/git-restore-mtime-action@v2
+
+      - name: restore timestamps
+        uses: chetan/git-restore-mtime-action@v2
         with:
           working-directory: "dprint"
 
