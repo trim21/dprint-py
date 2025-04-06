@@ -33,5 +33,4 @@ manifest-path = "dprint/crates/dprint/Cargo.toml"
 module-name = "dprint"
 strip = true
 locked = true
-frozen = true
 exclude = ['dprint/**/*']
