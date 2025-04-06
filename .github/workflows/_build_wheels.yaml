@@ -69,5 +69,5 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ runner.os }}-${{ matrix.platform.name }}
+          name: wheels-${{ matrix.platform.name }}
           path: dist
