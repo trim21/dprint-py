@@ -15,3 +15,5 @@ bindings = "bin"
 manifest-path = "dprint/crates/dprint/Cargo.toml"
 module-name = "dprint"
 strip = true
+locked = true
+exclude = ['dprint/**/*']
