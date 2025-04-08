@@ -32,7 +32,7 @@ jobs:
         with:
           subject-path: "dist/*"
       - name: Publish to PyPI
-        uses: PyO3/maturin-action@44479ae1b6b1a57f561e03add8832e62c185eb17 # v1
+        uses: PyO3/maturin-action@aef21716ff3dcae8a1c301d23ec3e4446972a6e3 # v1
         with:
           command: upload
           args: --non-interactive --skip-existing dist/*
