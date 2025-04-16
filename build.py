@@ -115,9 +115,12 @@ def main():
 
         print("downloading", target.url)
 
+        external_attr = None
+
         resp = httpx.get(target.url, follow_redirects=True)
         with io.BytesIO(resp.read()) as f:
             with zipfile.ZipFile(f) as zf:
+                external_attr = zf.getinfo(target.name).external_attr
                 with zf.open(target.name, "r") as bin:
                     executable = bin.read()
 
@@ -170,11 +173,13 @@ def main():
 
         wheel_name = "{}-{}.whl".format(package_name_with_version, wheel_tag)
         print("writing", wheel_name)
-        with zipfile.ZipFile(output.joinpath(wheel_name), "w") as zf:
+        with zipfile.ZipFile(
+            output.joinpath(wheel_name), "w", compression=zipfile.ZIP_DEFLATED
+        ) as zf:
             for name, file in files.items():
                 info = zipfile.ZipInfo(name)
-                if file.executable:
-                    info.external_attr = 0x775
+                if file.executable and target.platform != "win32":
+                    info.external_attr = external_attr
                 with zf.open(info, "w") as dest:
                     dest.write(file.content)
 
