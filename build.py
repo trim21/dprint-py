@@ -2,6 +2,7 @@ import base64
 import copy
 import hashlib
 import io
+import re
 import zipfile
 from dataclasses import dataclass
 from email.headerregistry import Address
@@ -23,6 +24,9 @@ _osx_arch_map = {
 }
 
 
+version_pattern = re.compile(r"^\d+\.\d+$")
+
+
 @dataclass(kw_only=True, slots=True, frozen=True)
 class Target:
     url: str
@@ -31,7 +35,6 @@ class Target:
     arch: Literal["amd64", "arm64"]
 
     manylinux: str | None = None
-    musllinux: str | None = None
 
     macos_target_version: str | None = None
 
@@ -39,15 +42,42 @@ class Target:
         if self.platform == "win32":
             return "py3-none-win_{}".format(self.arch)
         if self.platform == "linux":
-            if not self.manylinux:
+            manylinux = self.manylinux
+            if not manylinux:
                 raise Exception(
                     "manylinux is required for target(url={!r})".format(self.url)
                 )
-            return "py3-none-{}_{}".format(self.manylinux, _linux_arch_map[self.arch])
-        if self.platform == "osx":
-            return "py3-none-macosx_{}_{}".format(
-                self.macos_target_version.replace(".", "_"), _osx_arch_map[self.arch]
+
+            if not version_pattern.match(manylinux):
+                raise ValueError(
+                    "manylinux must match the pattern of {!r}, got {} instead".format(
+                        version_pattern.pattern, manylinux
+                    )
+                )
+
+            return "py3-none-manylinux_{}_{}".format(
+                manylinux.replace(".", "_"), _linux_arch_map[self.arch]
             )
+
+        if self.platform == "osx":
+            macos_target_version = self.macos_target_version
+            if not macos_target_version:
+                raise Exception(
+                    "manylinux is required for target(url={!r})".format(self.url)
+                )
+
+            if not version_pattern.match(macos_target_version):
+                raise ValueError(
+                    "macos_target_version must match the pattern of {!r}, got {} instead".format(
+                        version_pattern.pattern, macos_target_version
+                    )
+                )
+
+            return "py3-none-macosx_{}_{}".format(
+                macos_target_version.replace(".", "_"), _osx_arch_map[self.arch]
+            )
+
+        raise ValueError("unexpected platform {}".format(self.platform))
 
 
 @dataclass(kw_only=True, slots=True, frozen=True)
