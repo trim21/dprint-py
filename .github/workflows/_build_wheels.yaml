@@ -15,7 +15,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install -r requrements.txt
+      - run: pip install -r requirements.txt
       - run: python build.py
 
       - uses: actions/upload-artifact@v4
