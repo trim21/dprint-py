@@ -143,7 +143,8 @@ def main():
             records.append(
                 (
                     path,
-                    base64.urlsafe_b64encode(
+                    "sha256="
+                    + base64.urlsafe_b64encode(
                         hashlib.sha256(ensure_binary(content)).digest()
                     )
                     .rstrip(b"=")
