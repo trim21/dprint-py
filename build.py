@@ -3,6 +3,7 @@ import copy
 import hashlib
 import io
 import re
+import time
 import zipfile
 from dataclasses import dataclass
 from email.headerregistry import Address
@@ -86,6 +87,12 @@ class Config:
     target: list[Target]
 
 
+@dataclass(kw_only=True, slots=True, frozen=True)
+class File:
+    content: bytes
+    executable: bool = False
+
+
 def main():
     pyproject = load_pyproject()
 
@@ -104,7 +111,7 @@ def main():
         bin_ext = ".exe" if target.platform == "win32" else ""
         package_name_with_version = name.replace("-", "_") + "-" + version
 
-        files = {}
+        files: dict[str, File] = {}
 
         print("downloading", target.url)
 
@@ -120,58 +127,56 @@ def main():
             config.cmd + bin_ext,
         ).as_posix()
 
-        files[executable_path] = executable
+        files[executable_path] = File(content=executable, executable=True)
 
         dist_info_path = Path(package_name_with_version + ".dist-info")
 
-        files[dist_info_path.joinpath("WHEEL").as_posix()] = "\n".join(
-            [
-                "Wheel-Version: 1.0",
-                "Generator: pack-binary (0.0.1)",
-                "Root-Is-Purelib: false",
-                "Tag: {}".format(wheel_tag),
-                "",
-            ]
+        files[dist_info_path.joinpath("WHEEL").as_posix()] = File(
+            content="\n".join(
+                [
+                    "Wheel-Version: 1.0",
+                    "Generator: pack-binary (0.0.1)",
+                    "Root-Is-Purelib: false",
+                    "Tag: {}".format(wheel_tag),
+                    "",
+                ]
+            ).encode()
         )
 
         meta_file = "\n".join(generate_metadata(project)) + "\n"
 
-        files[dist_info_path.joinpath("METADATA").as_posix()] = meta_file
+        files[dist_info_path.joinpath("METADATA").as_posix()] = File(
+            content=meta_file.encode()
+        )
 
         records = []
-        for path, content in files.items():
+        for path, file in files.items():
             records.append(
                 (
                     path,
                     "sha256="
-                    + base64.urlsafe_b64encode(
-                        hashlib.sha256(ensure_binary(content)).digest()
-                    )
+                    + base64.urlsafe_b64encode(hashlib.sha256(file.content).digest())
                     .rstrip(b"=")
                     .decode(),
-                    str(len(content)),
+                    str(len(file.content)),
                 )
             )
 
         records.append((dist_info_path.joinpath("RECORD").as_posix(), "", ""))
 
-        files[dist_info_path.joinpath("RECORD").as_posix()] = (
-            "\n".join(",".join(record) for record in records) + "\n"
+        files[dist_info_path.joinpath("RECORD").as_posix()] = File(
+            content="\n".join(",".join(record) for record in records).encode() + b"\n"
         )
 
         wheel_name = "{}-{}.whl".format(package_name_with_version, wheel_tag)
         print("writing", wheel_name)
         with zipfile.ZipFile(output.joinpath(wheel_name), "w") as zf:
-            for file, content in files.items():
-                zf.writestr(file, data=content)
-
-
-def ensure_binary(s, encoding="utf-8", errors="strict"):
-    if isinstance(s, bytes):
-        return s
-    if isinstance(s, str):
-        return s.encode(encoding, errors)
-    raise TypeError("not expecting type '%s'" % type(s))
+            for name, file in files.items():
+                info = zipfile.ZipInfo(name)
+                if file.executable:
+                    info.external_attr = 0x775
+                with zf.open(info) as dest:
+                    dest.write(file.content)
 
 
 def load_pyproject():
