@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  linux:
+  wheels:
     runs-on: "ubuntu-24.04"
     steps:
       - uses: actions/checkout@v4
