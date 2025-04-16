@@ -134,7 +134,7 @@ def main():
             ]
         )
 
-        meta_file = "\n".join(generate_metadata(project))
+        meta_file = "\n".join(generate_metadata(project)) + "\n"
 
         files[dist_info_path.joinpath("METADATA").as_posix()] = meta_file
 
@@ -154,8 +154,8 @@ def main():
 
         records.sort()
 
-        files[dist_info_path.joinpath("RECORD").as_posix()] = "\n".join(
-            ",".join(record) for record in records
+        files[dist_info_path.joinpath("RECORD").as_posix()] = (
+            "\n".join(",".join(record) for record in records) + "\n"
         )
 
         wheel_name = "{}-{}.whl".format(package_name_with_version, wheel_tag)
