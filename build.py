@@ -152,6 +152,8 @@ def main():
                 )
             )
 
+        records.sort()
+
         files[dist_info_path.joinpath("RECORD").as_posix()] = "\n".join(
             ",".join(record) for record in records
         )
