@@ -27,8 +27,9 @@ jobs:
 
   test:
     name: test
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform }}
     strategy:
+      fail-fast: false
       matrix:
         platform:
           - windows-latest
@@ -40,9 +41,11 @@ jobs:
     steps:
       - uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4
         with:
-          pattern: wheels-*
+          name: wheels
           path: dist
-          merge-multiple: true
+
+      - run: ls ./dist/
+        shell: bash
 
       - uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
         with:

@@ -1,6 +1,6 @@
 [build-system]
-requires = ["maturin==1.8.3"]
-build-backend = "maturin"
+requires = ["non-exists-package"]
+build-backend = "non-exists-backend"
 
 [project]
 name = "dprint-py"
@@ -27,10 +27,39 @@ source = 'https://github.com/dprint/dprint'
 repository = 'https://github.com/trim21/dprint-py'
 homepage = 'https://dprint.dev/'
 
-[tool.maturin]
-bindings = "bin"
-manifest-path = "dprint/crates/dprint/Cargo.toml"
-module-name = "dprint"
-strip = true
-locked = true
-exclude = ['dprint/**/*']
+[tool.pack-binary]
+cmd = 'dprint'
+
+[[tool.pack-binary.target]]
+url = "https://github.com/dprint/dprint/releases/download/0.49.1/dprint-x86_64-pc-windows-msvc.zip"
+name = "dprint.exe"
+platform = "win32"
+arch = 'amd64'
+
+[[tool.pack-binary.target]]
+url = "https://github.com/dprint/dprint/releases/download/0.49.1/dprint-x86_64-unknown-linux-gnu.zip"
+name = "dprint"
+platform = "linux"
+arch = 'amd64'
+manylinux = '2.17'
+
+[[tool.pack-binary.target]]
+url = "https://github.com/dprint/dprint/releases/download/0.49.1/dprint-aarch64-unknown-linux-gnu.zip"
+name = "dprint"
+platform = "linux"
+arch = 'arm64'
+manylinux = '2.17'
+
+[[tool.pack-binary.target]]
+url = "https://github.com/dprint/dprint/releases/download/0.49.1/dprint-aarch64-apple-darwin.zip"
+name = "dprint"
+platform = "osx"
+arch = 'arm64'
+macos_target_version = '11.0'
+
+[[tool.pack-binary.target]]
+url = "https://github.com/dprint/dprint/releases/download/0.49.1/dprint-x86_64-apple-darwin.zip"
+name = "dprint"
+platform = "osx"
+arch = 'amd64'
+macos_target_version = '11.0'
