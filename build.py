@@ -99,11 +99,14 @@ def main():
     for target in config.target:
         name = project["name"]
         version = project["version"]
+        wheel_tag = target.wheel_tag()
 
         bin_ext = ".exe" if target.platform == "win32" else ""
         package_name_with_version = name.replace("-", "_") + "-" + version
 
         files = {}
+
+        print("downloading", target.url)
 
         resp = httpx.get(target.url, follow_redirects=True)
         with io.BytesIO(resp.read()) as f:
@@ -126,7 +129,7 @@ def main():
                 "Wheel-Version: 1.0",
                 "Generator: pack-binary (0.0.1)",
                 "Root-Is-Purelib: false",
-                "Tag: {}".format(target.wheel_tag()),
+                "Tag: {}".format(wheel_tag),
                 "",
             ]
         )
@@ -153,12 +156,9 @@ def main():
             ",".join(record) for record in records
         )
 
-        with zipfile.ZipFile(
-            output.joinpath(
-                "{}-{}.whl".format(package_name_with_version, target.wheel_tag())
-            ),
-            "w",
-        ) as zf:
+        wheel_name = "{}-{}.whl".format(package_name_with_version, wheel_tag)
+        print("writing", wheel_name)
+        with zipfile.ZipFile(output.joinpath(wheel_name), "w") as zf:
             for file, content in files.items():
                 zf.writestr(file, data=content)
 
