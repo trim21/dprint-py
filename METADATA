@@ -1,0 +1,8 @@
+Project-URL: source, https://github.com/dprint/dprint
+Project-URL: repository, https://github.com/trim21/dprint-py
+Project-URL: homepage, https://dprint.dev/
+
+# dprint
+
+This is a packaging of [dprint](https://dprint.dev/) on pypi.
+

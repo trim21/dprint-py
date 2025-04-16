@@ -4,115 +4,21 @@ on:
   workflow_call:
 
 jobs:
-  # we build linux wheel in docker,
-  # so host cache doesn't work
   linux:
-    runs-on: ${{ matrix.platform.runner }}
-    name: ${{ matrix.platform.name }}
-    strategy:
-      matrix:
-        platform:
-          - runner: ubuntu-24.04
-            target: x64
-            manylinux: auto
-            name: "linux x64 glibc"
-
-          - runner: ubuntu-24.04-arm
-            target: aarch64
-            manylinux: auto
-            name: "linux arm glibc"
-
-          - runner: ubuntu-24.04
-            target: x64
-            manylinux: musllinux_1_2
-            name: "linux x64 musl"
-
-          - runner: ubuntu-24.04-arm
-            target: aarch64
-            manylinux: musllinux_1_2
-            name: "linux arm musl"
-
+    runs-on: "ubuntu-24.04"
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: restore timestamps
-        uses: chetan/git-restore-mtime-action@v2
-
-      - name: restore timestamps
-        uses: chetan/git-restore-mtime-action@v2
+      - uses: actions/setup-python@v4
         with:
-          working-directory: "dprint"
+          python-version: "3.12"
 
-      - name: cache target
-        uses: actions/cache@v4
+      - run: pip install -r requrements.txt
+      - run: python build.py
+
+      - uses: actions/upload-artifact@v4
         with:
-          path: ./target/
-          key: target-${{ matrix.platform.name }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
-
-      - name: Build wheels
-        uses: PyO3/maturin-action@v1
-        with:
-          target: ${{ matrix.platform.target }}
-          args: --release --out dist --target-dir=./target/
-          sccache: "true"
-          manylinux: ${{ matrix.platform.manylinux }}
-
-      - name: Upload wheels
-        uses: actions/upload-artifact@v4
-        with:
-          name: wheels-${{ matrix.platform.name }}
-          path: dist
-
-  windows-macos:
-    name: ${{ matrix.platform.name }}
-    runs-on: ${{ matrix.platform.runner }}
-    strategy:
-      matrix:
-        platform:
-          - runner: windows-latest
-            target: x64
-            name: "windows x64"
-          - runner: macos-13
-            target: x86_64
-            name: "macOS x64"
-          - runner: macos-14
-            target: aarch64
-            name: "macOS arm"
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: restore timestamps
-        uses: chetan/git-restore-mtime-action@v2
-
-      - name: restore timestamps
-        uses: chetan/git-restore-mtime-action@v2
-        with:
-          working-directory: "dprint"
-
-      - name: cache crates
-        uses: actions/cache@v4
-        with:
-          path: ~/.cargo/registry/
-          key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
-
-      - name: cache target
-        uses: actions/cache@v4
-        with:
-          path: ./target/
-          key: target-${{ matrix.platform.name }}-${{ hashFiles('Cargo.lock', 'rust-toolchain.toml') }}
-
-      - name: Build wheels
-        uses: PyO3/maturin-action@v1
-        with:
-          target: ${{ matrix.platform.target }}
-          args: --release --out dist --target-dir=./target/
-
-      - name: Upload wheels
-        uses: actions/upload-artifact@v4
-        with:
-          name: wheels-${{ matrix.platform.name }}
+          name: wheels
           path: dist
