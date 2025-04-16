@@ -138,7 +138,7 @@ def main():
 
         files[dist_info_path.joinpath("METADATA").as_posix()] = meta_file
 
-        records = [(dist_info_path.joinpath("RECORD").as_posix(), "", "")]
+        records = []
         for path, content in files.items():
             records.append(
                 (
@@ -153,7 +153,7 @@ def main():
                 )
             )
 
-        records.sort()
+        records.append((dist_info_path.joinpath("RECORD").as_posix(), "", ""))
 
         files[dist_info_path.joinpath("RECORD").as_posix()] = (
             "\n".join(",".join(record) for record in records) + "\n"
