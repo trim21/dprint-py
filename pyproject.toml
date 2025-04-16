@@ -36,19 +36,19 @@ name = "dprint.exe"
 platform = "win32"
 arch = 'amd64'
 
-[[tool.pack-binary.target]]
-url = "https://github.com/dprint/dprint/releases/download/0.49.1/dprint-x86_64-unknown-linux-gnu.zip"
-name = "dprint"
-platform = "linux"
-arch = 'amd64'
-manylinux = '2.17'
+# [[tool.pack-binary.target]]
+# url = "https://github.com/dprint/dprint/releases/download/0.49.1/dprint-x86_64-unknown-linux-gnu.zip"
+# name = "dprint"
+# platform = "linux"
+# arch = 'amd64'
+# manylinux = '2.18'
 
-[[tool.pack-binary.target]]
-url = "https://github.com/dprint/dprint/releases/download/0.49.1/dprint-aarch64-unknown-linux-gnu.zip"
-name = "dprint"
-platform = "linux"
-arch = 'arm64'
-manylinux = '2.17'
+# [[tool.pack-binary.target]]
+# url = "https://github.com/dprint/dprint/releases/download/0.49.1/dprint-aarch64-unknown-linux-gnu.zip"
+# name = "dprint"
+# platform = "linux"
+# arch = 'arm64'
+# manylinux = '2.18'
 
 [[tool.pack-binary.target]]
 url = "https://github.com/dprint/dprint/releases/download/0.49.1/dprint-aarch64-apple-darwin.zip"
