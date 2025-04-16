@@ -115,8 +115,6 @@ def main():
 
         print("downloading", target.url)
 
-        external_attr = None
-
         resp = httpx.get(target.url, follow_redirects=True)
         with io.BytesIO(resp.read()) as f:
             with zipfile.ZipFile(f) as zf:
