@@ -175,7 +175,7 @@ def main():
                 info = zipfile.ZipInfo(name)
                 if file.executable:
                     info.external_attr = 0x775
-                with zf.open(info) as dest:
+                with zf.open(info, "w") as dest:
                     dest.write(file.content)
 
 
