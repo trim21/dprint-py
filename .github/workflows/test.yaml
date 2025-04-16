@@ -45,6 +45,8 @@ jobs:
           path: dist
           merge-multiple: true
 
+      - run: ls ./dist/
+
       - uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 # v5
         with:
           python-version: "3.x"
