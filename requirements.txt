@@ -1,2 +1,3 @@
 httpx
 cattrs
+jinja2
