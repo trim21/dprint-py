@@ -3,5 +3,20 @@
   "extends": [
     "github>Trim21/renovate-config"
   ],
-  "rangeStrategy": "pin"
+  "rangeStrategy": "pin",
+  "customManagers": [
+    {
+      "customType": "jsonata",
+      "fileMatch": [
+        "(^|/)pyproject\\.toml$"
+      ],
+      "fileFormat": "toml",
+      "matchStrings": [
+        "[{'currentValue': tool.'pack-binary'.context.version}]"
+      ],
+      "depNameTemplate": "dprint/dprint",
+      "packageNameTemplate": "dprint/dprint",
+      "datasourceTemplate": "github-releases"
+    }
+  ]
 }
