@@ -5,12 +5,13 @@ import io
 import re
 import time
 import zipfile
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from email.headerregistry import Address
 from pathlib import Path
 from typing import Any, Literal
 import tomllib
 
+import jinja2
 import cattrs
 import httpx
 
@@ -84,6 +85,7 @@ class Target:
 @dataclass(kw_only=True, slots=True, frozen=True)
 class Config:
     cmd: str
+    context: dict[str, str] = field(default_factory=dict)
     target: list[Target]
 
 
@@ -113,9 +115,10 @@ def main():
 
         files: dict[str, File] = {}
 
-        print("downloading", target.url)
+        url = jinja2.Template(target.url).render(**config.context)
+        print("downloading", url)
 
-        resp = httpx.get(target.url, follow_redirects=True)
+        resp = httpx.get(url, follow_redirects=True)
         with io.BytesIO(resp.read()) as f:
             with zipfile.ZipFile(f) as zf:
                 external_attr = zf.getinfo(target.name).external_attr
