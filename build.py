@@ -3,7 +3,6 @@ import copy
 import hashlib
 import io
 import re
-import time
 import zipfile
 from dataclasses import dataclass, field
 from email.headerregistry import Address
