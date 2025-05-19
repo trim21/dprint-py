@@ -15,7 +15,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install -r requirements.txt
+      - uses: astral-sh/setup-uv@v6
+        with:
+          activate-environment: true
+
+      - run: uv sync --locked
+
       - run: python build.py
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

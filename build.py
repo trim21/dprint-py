@@ -3,7 +3,6 @@ import copy
 import hashlib
 import io
 import re
-import time
 import zipfile
 from dataclasses import dataclass, field
 from email.headerregistry import Address
@@ -12,7 +11,7 @@ from typing import Any, Literal
 import tomllib
 
 import jinja2
-import cattrs
+import pydantic
 import httpx
 
 _linux_arch_map = {
@@ -100,7 +99,9 @@ def main():
 
     project = pyproject["project"]
 
-    config = cattrs.structure(pyproject["tool"]["pack-binary"], Config)
+    config = pydantic.TypeAdapter(Config).validate_python(
+        pyproject["tool"]["pack-binary"]
+    )
 
     output = Path("dist")
     output.mkdir(exist_ok=True, parents=True)

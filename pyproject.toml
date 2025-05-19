@@ -27,6 +27,16 @@ source = 'https://github.com/dprint/dprint'
 repository = 'https://github.com/trim21/dprint-py'
 homepage = 'https://dprint.dev/'
 
+[dependency-groups]
+dev = [
+  "httpx ; python_version >= '3.10'",
+  "pydantic ; python_version >= '3.10'",
+  "jinja2 ; python_version >= '3.10'",
+]
+
+[tool.uv]
+package = false
+
 [tool.pack-binary]
 cmd = 'dprint'
 
