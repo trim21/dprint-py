@@ -28,9 +28,9 @@ repository = 'https://github.com/trim21/dprint-py'
 homepage = 'https://dprint.dev/'
 
 [dependency-groups]
-dep = [
+dev = [
   "httpx ; python_version >= '3.10'",
-  "cattrs ; python_version >= '3.10'",
+  "pydantic ; python_version >= '3.10'",
   "jinja2 ; python_version >= '3.10'",
 ]
 

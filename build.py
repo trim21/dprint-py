@@ -11,7 +11,7 @@ from typing import Any, Literal
 import tomllib
 
 import jinja2
-import cattrs
+import pydantic
 import httpx
 
 _linux_arch_map = {
@@ -99,7 +99,9 @@ def main():
 
     project = pyproject["project"]
 
-    config = cattrs.structure(pyproject["tool"]["pack-binary"], Config)
+    config = pydantic.TypeAdapter(Config).validate_python(
+        pyproject["tool"]["pack-binary"]
+    )
 
     output = Path("dist")
     output.mkdir(exist_ok=True, parents=True)
