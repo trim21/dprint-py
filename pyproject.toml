@@ -30,7 +30,7 @@ homepage = 'https://dprint.dev/'
 [tool.pack-binary]
 cmd = 'dprint'
 
-context = { version = '0.49.1' }
+context = { version = '0.50.0' }
 
 [[tool.pack-binary.target]]
 url = "https://github.com/dprint/dprint/releases/download/{{ version }}/dprint-x86_64-pc-windows-msvc.zip"
