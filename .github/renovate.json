@@ -8,8 +8,8 @@
   "customManagers": [
     {
       "customType": "jsonata",
-      "fileMatch": [
-        "(^|/)pyproject\\.toml$"
+      "managerFilePatterns": [
+        "**/pyproject.toml"
       ],
       "fileFormat": "toml",
       "matchStrings": [
