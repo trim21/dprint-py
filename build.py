@@ -97,7 +97,7 @@ class File:
 def main():
     pyproject = load_pyproject()
 
-    project = pyproject["project"]
+    project = pyproject["tool"]["pack-binary"]["project"]
 
     config = pydantic.TypeAdapter(Config).validate_python(
         pyproject["tool"]["pack-binary"]
