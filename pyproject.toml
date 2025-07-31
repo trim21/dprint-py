@@ -48,7 +48,6 @@ source = 'https://github.com/dprint/dprint'
 repository = 'https://github.com/trim21/dprint-py'
 homepage = 'https://dprint.dev/'
 
-
 [[tool.pack-binary.target]]
 url = "https://github.com/dprint/dprint/releases/download/{{ version }}/dprint-x86_64-pc-windows-msvc.zip"
 name = "dprint.exe"
