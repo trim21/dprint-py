@@ -21,12 +21,12 @@ package = false
 [tool.pack-binary]
 cmd = 'dprint'
 
-context = { version = '0.50.1' }
+context = { version = '0.50.2' }
 
 [tool.pack-binary.project]
 name = "dprint-py"
 requires-python = ">=3.0"
-version = '0.50.1.4'
+version = '0.50.2.0'
 description = "a pluggable and configurable code formatting platform."
 readme = "readme.md"
 license = "MIT"
