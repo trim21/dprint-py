@@ -33,7 +33,7 @@ jobs:
       matrix:
         platform:
           - windows-latest
-          - macos-13
+          - macos-14-large
           - macos-14
           - ubuntu-latest
           - ubuntu-24.04-arm
