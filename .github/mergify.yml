@@ -9,14 +9,14 @@ pull_request_rules:
 
   - name: Automatic merge on approval
     conditions:
-      - '#commits-behind=0'
+      - "#commits-behind=0"
       - or:
-          - '#approved-reviews-by>=1'
+          - "#approved-reviews-by>=1"
           - label=ci:auto-merge
       - not:
           and:
-            - 'head*=renovate/lockfile-maintenance-*'
-            - 'created-at>24h ago'
+            - "head*=renovate/lockfile-maintenance-*"
+            - "created-at>24h ago"
       - base=master
       - check-success=pre-commit
       - check-success=test-pass
