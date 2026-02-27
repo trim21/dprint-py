@@ -53,3 +53,11 @@ jobs:
 
       - run: pip install dprint-py --no-index --find-links=./dist/
       - run: dprint --help
+
+  test-pass:
+    name: test-pass
+    runs-on: ubuntu-slim
+    needs:
+      - test
+    steps:
+      - run: echo success

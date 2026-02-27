@@ -19,5 +19,10 @@
       "packageNameTemplate": "dprint/dprint",
       "datasourceTemplate": "github-releases"
     }
-  ]
+  ],
+  "labels": [
+    "ci:auto-merge",
+    "dependencies"
+  ],
+  "prConcurrentLimit": 3
 }
