@@ -7,15 +7,15 @@ jobs:
   wheels:
     runs-on: "ubuntu-24.04"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
         with:
           submodules: recursive
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6.2.0
         with:
           python-version: "3.12"
 
-      - uses: astral-sh/setup-uv@v7
+      - uses: astral-sh/setup-uv@v7.6.0
         with:
           activate-environment: true
 
@@ -23,7 +23,7 @@ jobs:
 
       - run: python build.py
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v7.0.1
         with:
           name: wheels
           path: dist
