@@ -21,7 +21,7 @@ package = false
 [tool.pack-binary]
 cmd = 'dprint'
 
-context = { version = '0.54.0' }
+context = { version = '0.55.0' }
 
 [tool.pack-binary.project]
 name = "dprint-py"
