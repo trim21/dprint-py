@@ -1,25 +1,23 @@
 name: sync-version
 
 on:
-  pull_request:
+  push:
+    branches:
+      - master
     paths:
       - pyproject.toml
-    types:
-      - opened
-      - synchronize
+  schedule:
+    - cron: "0 0 * * *"
 
 permissions:
   contents: write
 
 jobs:
   sync:
-    if: startsWith(github.head_ref, 'renovate/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.0
         with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-python@v6.3.0
         with:
@@ -34,7 +32,7 @@ jobs:
       - name: Sync project version
         run: uv run python scripts/sync_version.py
 
-      - name: Commit version sync
+      - name: Commit and push
         run: |
           if git diff --quiet; then
             echo "No changes to commit"
