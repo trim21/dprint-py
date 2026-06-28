@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.0
         with:
-          fetch-depth: 0
+          token: ${{ secrets.PAT }}
 
       - name: Read version from pyproject.toml
         id: version
@@ -29,8 +29,10 @@ jobs:
 
       - name: Check if tag already exists
         id: check_tag
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
         run: |
-          if git rev-parse "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+          if gh api "repos/${{ github.repository }}/git/refs/tags/v${{ steps.version.outputs.version }}" --silent 2>/dev/null; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
