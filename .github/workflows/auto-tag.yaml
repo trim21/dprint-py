@@ -37,7 +37,7 @@ jobs:
       - name: Create and push tag
         if: steps.check_tag.outputs.exists == 'false'
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

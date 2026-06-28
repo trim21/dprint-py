@@ -33,6 +33,7 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v8.1.1
         with:
+          token: ${{ secrets.PAT }}
           branch: sync/project-version
           commit-message: "chore: sync project.version to upstream"
           title: "chore: sync project.version to upstream"
