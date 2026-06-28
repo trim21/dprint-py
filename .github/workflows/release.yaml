@@ -30,4 +30,4 @@ jobs:
         with:
           activate-environment: true
 
-      - run: uv publish
+      - run: uv publish --no-progress
