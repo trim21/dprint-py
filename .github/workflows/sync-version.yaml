@@ -4,10 +4,8 @@ on:
   push:
     branches:
       - master
-    paths:
-      - pyproject.toml
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "37 14 * * *"
 
 permissions:
   contents: write
@@ -17,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.0
-        with:
 
       - uses: actions/setup-python@v6.3.0
         with:
