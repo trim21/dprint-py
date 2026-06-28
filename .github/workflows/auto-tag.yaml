@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - pyproject.toml
 
 permissions:
   contents: write
@@ -15,9 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.0
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Read version from pyproject.toml
         id: version
@@ -42,7 +37,7 @@ jobs:
       - name: Create and push tag
         if: steps.check_tag.outputs.exists == 'false'
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
