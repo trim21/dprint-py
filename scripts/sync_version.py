@@ -14,7 +14,21 @@ def main() -> int:
     pack_binary = data["tool"]["pack-binary"]
     upstream_version = pack_binary["context"]["version"]
     project_version = pack_binary["project"]["version"]
-    new_project_version = upstream_version + ".0"
+
+    # Extract the upstream part from current project.version (everything except the last segment).
+    # e.g. "0.55.1.2" -> upstream="0.55.1", build="2"
+    parts = project_version.rsplit(".", 1)
+    if len(parts) == 2:
+        current_upstream, build = parts
+    else:
+        current_upstream, build = project_version, "0"
+
+    if current_upstream == upstream_version:
+        # Same upstream, preserve build number
+        new_project_version = upstream_version + "." + build
+    else:
+        # Upstream changed, reset build to 0
+        new_project_version = upstream_version + ".0"
 
     if project_version == new_project_version:
         print(f"project.version already matches: {project_version}")
