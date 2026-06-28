@@ -18,7 +18,7 @@ import httpx
 class Target:
     url: str
     name: str
-    tag: str
+    tag: str | list[str]
 
 
 @dataclass(kw_only=True, slots=True, frozen=True)
@@ -75,15 +75,18 @@ def main():
 
         dist_info_path = Path(package_name_with_version + ".dist-info")
 
+        tags = target.tag if isinstance(target.tag, list) else [target.tag]
+        full_tags = ["py3-none-" + t for t in tags]
+
         files[dist_info_path.joinpath("WHEEL").as_posix()] = File(
             content="\n".join(
                 [
                     "Wheel-Version: 1.0",
                     "Generator: pack-binary (0.0.1)",
                     "Root-Is-Purelib: false",
-                    "Tag: {}".format(target.tag),
-                    "",
                 ]
+                + ["Tag: {}".format(t) for t in full_tags]
+                + [""]
             ).encode()
         )
 
@@ -112,7 +115,8 @@ def main():
             content="\n".join(",".join(record) for record in records).encode() + b"\n"
         )
 
-        wheel_name = "{}-{}.whl".format(package_name_with_version, target.tag)
+        wheel_tag = "py3-none-" + ".".join(tags)
+        wheel_name = "{}-{}.whl".format(package_name_with_version, wheel_tag)
         print("writing", wheel_name)
         with zipfile.ZipFile(
             output.joinpath(wheel_name), "w", compression=zipfile.ZIP_DEFLATED

@@ -29,7 +29,7 @@ context = { version = '0.55.1' }
 [tool.pack-binary.project]
 name = "dprint-py"
 requires-python = ">=3.0"
-version = '0.55.1.2'
+version = '0.55.1.3'
 description = "a pluggable and configurable code formatting platform."
 readme = "readme.md"
 license = "MIT"
@@ -54,34 +54,34 @@ homepage = 'https://dprint.dev/'
 [[tool.pack-binary.target]]
 url = "https://github.com/dprint/dprint/releases/download/{{ version }}/dprint-x86_64-pc-windows-msvc.zip"
 name = "dprint.exe"
-tag = "py3-none-win_amd64"
+tag = "win_amd64"
 
 [[tool.pack-binary.target]]
 url = "https://github.com/dprint/dprint/releases/download/{{ version }}/dprint-x86_64-unknown-linux-gnu.zip"
 name = "dprint"
-tag = "py3-none-manylinux_2_17_x86_64"
+tag = "manylinux_2_17_x86_64"
 
 [[tool.pack-binary.target]]
 url = "https://github.com/dprint/dprint/releases/download/{{ version }}/dprint-aarch64-unknown-linux-gnu.zip"
 name = "dprint"
-tag = "py3-none-manylinux_2_17_aarch64"
+tag = "manylinux_2_17_aarch64"
 
 [[tool.pack-binary.target]]
 url = "https://github.com/dprint/dprint/releases/download/{{ version }}/dprint-aarch64-apple-darwin.zip"
 name = "dprint"
-tag = "py3-none-macosx_11_0_arm64"
+tag = "macosx_11_0_arm64"
 
 [[tool.pack-binary.target]]
 url = "https://github.com/dprint/dprint/releases/download/{{ version }}/dprint-x86_64-apple-darwin.zip"
 name = "dprint"
-tag = "py3-none-macosx_11_0_x86_64"
+tag = "macosx_11_0_x86_64"
 
 [[tool.pack-binary.target]]
 url = "https://github.com/dprint/dprint/releases/download/{{ version }}/dprint-x86_64-unknown-linux-musl.zip"
 name = "dprint"
-tag = "py3-none-linux_x86_64"
+tag = ["manylinux_2_17_x86_64", "musllinux_1_1_x86_64"]
 
 [[tool.pack-binary.target]]
 url = "https://github.com/dprint/dprint/releases/download/{{ version }}/dprint-aarch64-pc-windows-msvc.zip"
 name = "dprint.exe"
-tag = "py3-none-win_arm64"
+tag = "win_arm64"
