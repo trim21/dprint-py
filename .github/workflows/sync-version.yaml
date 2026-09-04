@@ -39,4 +39,4 @@ jobs:
           title: "chore: sync project.version to upstream"
           body: "Automatically synced `project.version` to match upstream `context.version`."
           delete-branch: true
-          labels: 'ci:auto-merge'
+          labels: "ci:auto-merge"
