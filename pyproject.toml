@@ -24,7 +24,7 @@ typeCheckingMode = "strict"
 [tool.pack-binary]
 cmd = 'dprint'
 
-context = { version = '0.57.4' }
+context = { version = '0.58.0' }
 
 [tool.pack-binary.project]
 name = "dprint-py"
