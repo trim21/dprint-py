@@ -5,6 +5,13 @@
     "github>Trim21/renovate-config:python"
   ],
   "rangeStrategy": "pin",
+  "packageRules": [
+    {
+      "matchManagers": ["pep621"],
+      "matchDepNames": ["python"],
+      "enabled": false
+    }
+  ],
   "customManagers": [
     {
       "customType": "jsonata",
